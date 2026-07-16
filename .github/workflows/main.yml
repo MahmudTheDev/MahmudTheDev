@@ -1,17 +1,16 @@
 name: Generate Snake
 
 on:
-  # প্রতি ২৪ ঘণ্টায় একবার অটোমেটিক রান হবে
   schedule:
     - cron: "0 0 * * *" 
-  
-  # তোমাকে ম্যানুয়ালি রান করার অপশন দেবে
   workflow_dispatch:
-  
-  # যখনই মেইন ব্রাঞ্চে কোনো পুশ হবে তখনই রান হবে
   push:
     branches:
     - main
+
+# গিটহাব অ্যাকশনকে ফাইল রাইট করার পারমিশন দেওয়ার জন্য এই ব্লকটি যোগ করা হয়েছে
+permissions:
+  contents: write
 
 jobs:
   generate:
@@ -19,7 +18,6 @@ jobs:
     timeout-minutes: 10
     
     steps:
-      # Generates a snake game from a github user contributions graph, output a svg animation
       - name: generate github-contribution-grid-snake.svg
         uses: Platane/snk/svg-only@v3
         with:
@@ -30,8 +28,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
-      # Push the content of <build_dir> to a branch
-      # The content will be available at https://raw.githubusercontent.com/<username>/<repo>/<branch>/<path>
       - name: push github-contribution-grid-snake.svg to the output branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
